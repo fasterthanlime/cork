@@ -7,7 +7,7 @@
 
 Another attempt at an ooc compiler.
 
-cf. `docs/design.md`
+cf. [`docs/design.md`](blob/master/docs/design.md)
 
 ### Authors
 
@@ -17,6 +17,6 @@ cf. `docs/design.md`
 
 Previous attempts
 
-  * https://github.com/nddrylliog/rock
-  * https://github.com/nddrylliog/oc
+  * https://github.com/fasterthanlime/rock
+  * https://github.com/nddrylliog/oc (along with oc-nagaqueen & oc-c89)
 
