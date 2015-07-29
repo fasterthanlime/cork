@@ -49,12 +49,14 @@ Frontend: class {
         // TODO: cycle through 'used' projects
         project := module project
 
-        // try as an absolute import
-        file := project find(importPath)
+        // try as a relative import
+        subPath := "#{module path}/../#{importPath}"
+        subPath = File new(subPath) getReducedPath()
+        file := project find(subPath)
 
         if (!file) {
-            // try as a relative import
-            file = project find("#{module path}/../#{importPath}")
+            // try as an absolute import
+            file := project find(importPath)
         }
 
         if (!file) {

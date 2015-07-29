@@ -3,9 +3,6 @@
 import structs/[ArrayList, HashMap]
 import io/File
 
-// ours
-import UseFileParser
-
 /**
  * AST for a .use file
  */
@@ -19,12 +16,14 @@ UseFile: class {
     linker: String
     main: String
     binaryPath: String
+    luaBindings: String
 
     imports := ArrayList<String> new()
     preMains := ArrayList<String> new()
     androidLibs := ArrayList<String> new()
     androidIncludePaths := ArrayList<String> new()
     oocLibPaths := ArrayList<File> new()
+    requirements := ArrayList<Requirement> new()
 
     properties := ArrayList<UseProperties> new()
 
@@ -38,13 +37,44 @@ UseFile: class {
 }
 
 /**
+ * Properties in a .use file that are versionable
+ */
+UseProperties: class {
+    useFile: UseFile
+    useVersion: UseVersion
+
+    pkgs := ArrayList<String> new()
+    customPkgs := ArrayList<CustomPkg> new()
+    additionals := ArrayList<Additional> new()
+    frameworks := ArrayList<String> new()
+    includePaths := ArrayList<String> new()
+    includes := ArrayList<String> new()
+    libPaths := ArrayList<String> new()
+    libs := ArrayList<String> new()
+
+    init: func (=useFile, =useVersion)
+
+    merge!: func (other: This) -> This {
+        pkgs addAll(other pkgs)
+        customPkgs addAll(other customPkgs)
+        additionals addAll(other additionals)
+        frameworks addAll(other frameworks)
+        includePaths addAll(other includePaths)
+        includes addAll(other includes)
+        libPaths addAll(other libPaths)
+        libs addAll(other libs)
+
+        this
+    }
+}
+
+/**
  * Represents the requirement for a .use file, ie. a dependency
  * The 'ver' string, if non-null/non-empty, should specify a minimal
  * accepted version.
  */
 Requirement: class {
     name, ver: String
-    useFile: UseFile { get set }
 
     init: func (=name, =ver)
 }
@@ -74,52 +104,7 @@ Additional: class {
 }
 
 /**
- * Properties in a .use file that are versionable
- */
-UseProperties: class {
-    useFile: UseFile
-    useVersion: UseVersion { get set }
-
-    pkgs                : ArrayList<String> { get set }
-    customPkgs          : ArrayList<CustomPkg> { get set }
-    additionals         : ArrayList<Additional> { get set }
-    frameworks          : ArrayList<String> { get set }
-    includePaths        : ArrayList<String> { get set }
-    includes            : ArrayList<String> { get set }
-    libPaths            : ArrayList<String> { get set }
-    libs                : ArrayList<String> { get set }
-
-    requirements        : ArrayList<Requirement> { get set }
-
-    init: func (=useFile, =useVersion) {
-        pkgs                = ArrayList<String> new()
-        customPkgs          = ArrayList<CustomPkg> new()
-        additionals         = ArrayList<Additional> new()
-        frameworks          = ArrayList<String> new()
-        includePaths        = ArrayList<String> new()
-        includes            = ArrayList<String> new()
-        libPaths            = ArrayList<String> new()
-        libs                = ArrayList<String> new()
-
-        requirements        = ArrayList<Requirement> new()
-    }
-
-    merge!: func (other: This) -> This {
-        pkgs                      addAll(other pkgs)
-        customPkgs                addAll(other customPkgs)
-        additionals               addAll(other additionals)
-        frameworks                addAll(other frameworks)
-        includePaths              addAll(other includePaths)
-        includes                  addAll(other includes)
-        libPaths                  addAll(other libPaths)
-        libs                      addAll(other libs)
-    }
-}
-
-/**
  * Versioned block in a use def file
- *
- * This one is always satisfied
  */
 UseVersion: class {
     useFile: UseFile
