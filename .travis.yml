@@ -12,7 +12,7 @@ before_install:
   - export PATH=$PATH:$PWD/rock/bin:$PWD/sam:$PWD
   - export OOC_LIBS=$PWD
   - git clone --depth=1 git://github.com/fasterthanlime/rock.git
-  - (cd rock && make -s quick-rescue)
+  - (cd rock && make -s rescue)
   - git clone --depth=1 git://github.com/fasterthanlime/sam.git
   - (cd sam && rock --quiet sam.use)
   - git clone --depth=1 git://github.com/fasterthanlime/nagaqueen.git
