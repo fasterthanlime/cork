@@ -24,7 +24,7 @@ responsible for resolving itself.
 
 Every Node has a resolve method, like so:
 
-```
+```ooc
 resolve: func (res: Resolver, trail: Trail) -> Response {
   // do things
 
@@ -62,7 +62,7 @@ return value from the parent ultimately counts.
 
 Example of badly coded node:
 
-```
+```ooc
 BinaryOp: class extends Node {
 
   left, right: Expression
@@ -113,12 +113,11 @@ Why do we go through the whole AST on every round? Isn't that why we have
 reason to call `resolve` on a Node anymore - when all its children, its type,
 etc., is all done, set in stone, nothing more to change about it.
 
-But some nodes' `resolvedness` depends on their trail. Most nodes act differently
-depending on what their parent is. For example, `VariableAccess` checks if it is
-the LHS(2) of an assignment, and if it refers to a property access - in which case,
-it should be replaced with a property setter call.
-
-(2): Left-hand-side
+But some nodes' `resolvedness` depends on their trail. Most nodes act
+differently depending on what their parent is. For example, `VariableAccess`
+checks if it is the left-hand-side of an assignment, and if it refers to a
+property access - in which case, it should be replaced with a property setter
+call.
 
 So, if those nodes are being moved around, they need to resolve again (discarding
 their `_resolved` internal marker) to make sure they didn't miss anything.
@@ -144,7 +143,7 @@ and so on until the next pool is the empty set.
 It also has some additional logic to handle node indices, so that the following
 code:
 
-```
+```ooc
 main: func {
   a println()
   a := "Hello"
