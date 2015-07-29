@@ -1,6 +1,6 @@
 
 use cork
-import Settings, Compiler
+import Settings, OptionParser, Compiler
 
 import Version
 VERSION := Version new(0, 1, 0)
@@ -14,11 +14,10 @@ main: func (args: ArrayList<String>) -> Int {
     "cork v#{VERSION}" println()
 
     settings := Settings new()
+    optParser := OptionParser new(settings)
+    optParser parse(args)
+
     compiler := Compiler new(settings)
-    for ((i, arg) in args) {
-        if (i == 0) continue
-        compiler addUnit(arg)
-    }
     compiler run()
 
     0

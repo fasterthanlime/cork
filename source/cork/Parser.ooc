@@ -3,6 +3,7 @@ use nagaqueen
 import nagaqueen/OocListener
 
 import Settings
+import Project
 import AST
 
 /**
@@ -16,10 +17,18 @@ Parser: class extends OocListener {
 
     init: func (=settings)
 
-    parse: func (path: String) {
-        module = Module new()
+    parse: func ~cork (project: Project, path: String) {
+        module = Module new(project, path)
+        if (!module file) {
+            err("Could not find #{path} in #{project sourcePath}")
+        }
 
-        super(path)
+        super(module file path)
+    }
+
+    err: func (msg: String) {
+        msg print()
+        exit(1)
     }
 
     /**
@@ -29,6 +38,7 @@ Parser: class extends OocListener {
 
     onVarAccess: func (expr: Object, name: CString) -> Object {
         "Got variable access to #{name}" println()
+        null
     }
 
     onImport: func (path, name: CString) {

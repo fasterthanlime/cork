@@ -1,6 +1,9 @@
 
 import Settings
 import Frontend
+import Project
+
+import libuse/UseFile
 
 import structs/ArrayList
 
@@ -17,26 +20,22 @@ Compiler: class {
         // nothing
     }
 
-    addUnit: func (path: String) {
-        units add(path)
-    }
-
     run: func {
-        if (units empty?()) {
+        if (!settings main) {
             "Nothing to compile, bailing out." println()
             return
         }
 
         frontend := Frontend new(settings)
 
-        for (unit in units) {
-            frontend parseRecursive(unit)
+        project := settings main
+        if (!project useFile main) {
+            "Lib-compilation not supported yet" println()
+            return
         }
+
+        frontend parseRecursive(project, project useFile main)
     }
-
-}
-
-cop: func (path: String) {
 
 }
 

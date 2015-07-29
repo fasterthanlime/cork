@@ -1,4 +1,4 @@
 Name: libovum
-Version: 0.1
+Version: 0.1.0
 Description: libcee's half-twin, to deal with the C language
-SourcePath: source
+SourcePath: vendor/libovum/source

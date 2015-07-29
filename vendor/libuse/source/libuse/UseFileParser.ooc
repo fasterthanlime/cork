@@ -8,13 +8,20 @@ import UseFile
 
 UseFileParser: class {
 
-    cache := static HashMap<String, UseFile> new()
-    libsDirs := static ArrayList<File> new()
+    cache := HashMap<String, UseFile> new()
+    libDirs := ArrayList<File> new()
 
-    useFile: UseFile
-    file: File
+    init: func
+    
+    parse: func (file: File) -> UseFile {
+        if (!file exists?()) {
+            ".use file not found: #{file path}" println()
+            exit(1)
+        }
 
-    init: func (=useFile, =file) {
+        useFile := UseFile new()
+        useFile file = file
+
         "Reading use file #{file}" println()
 
         fR := FileReader new(file)
@@ -22,22 +29,20 @@ UseFileParser: class {
             line := fR readLine()
             "line: #{line}" println()
         }
+
+        useFile
     }
 
-    findUse: static func (identifier: String) -> File {
+    findUse: func (identifier: String) -> File {
         fileName := "#{identifier}.use"
 
-        for(dir in libsDirs) {
+        for(dir in libDirs) {
             if(dir path == null) continue
             res := dir findShallow(fileName, 2)
             if (res) return res
         }
 
         null
-    }
-
-    addLibsDir: static func (libsDir: File) {
-        libsDirs add(libsDir)
     }
 
 }

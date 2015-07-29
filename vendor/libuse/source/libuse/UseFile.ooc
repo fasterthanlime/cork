@@ -11,43 +11,29 @@ import UseFileParser
  */
 UseFile: class {
 
-    identifier:    String { get set }
-    name:          String { get set }
-    description:   String { get set }
-    versionNumber: String { get set }
-    sourcePath:    String { get set }
-    linker:        String { get set }
-    main:          String { get set }
-    binarypath:    String { get set }
+    identifier: String
+    name: String
+    description: String
+    versionNumber: String
+    sourcePath: String
+    linker: String
+    main: String
+    binaryPath: String
 
-    imports             : ArrayList<String> { get set }
-    preMains            : ArrayList<String> { get set }
-    androidLibs         : ArrayList<String> { get set }
-    androidIncludePaths : ArrayList<String> { get set }
-    oocLibPaths         : ArrayList<File> { get set }
+    imports := ArrayList<String> new()
+    preMains := ArrayList<String> new()
+    androidLibs := ArrayList<String> new()
+    androidIncludePaths := ArrayList<String> new()
+    oocLibPaths := ArrayList<File> new()
 
     properties := ArrayList<UseProperties> new()
 
     file: File
 
     /**
-     * Read a use file from its identifier.
+     * Initialize an empty use file
      */
-    init: func ~ident (=identifier) {
-        init(UseFileParser findUse(identifier))
-    }
-
-    /**
-     * Read a use file from a specific file
-     */
-    init: func ~file (=file) {
-        imports             = ArrayList<String> new()
-        preMains            = ArrayList<String> new()
-        androidLibs         = ArrayList<String> new()
-        androidIncludePaths = ArrayList<String> new()
-        oocLibPaths         = ArrayList<File> new()
-        UseFileParser new(this, file)
-    }
+    init: func ~empty
 
 }
 

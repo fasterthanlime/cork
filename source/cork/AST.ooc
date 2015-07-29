@@ -1,5 +1,8 @@
 
+import Project
+
 import structs/[HashMap, MultiMap, ArrayList]
+import io/File
 
 /**
  * Base class for all AST nodes
@@ -15,9 +18,19 @@ Node: class {
  */
 Module: class {
 
+
     imports := ArrayList<Import> new()
 
-    init: func
+    project: Project
+    path: String
+
+    file: File
+    projectPath: String
+
+    init: func (=project, =path) {
+        file = project find(path, "ooc")
+        projectPath = file rebase(project sourcePath) path
+    }
 
 }
 

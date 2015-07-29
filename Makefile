@@ -3,7 +3,7 @@ OOC ?= rock
 OOC_ARGS ?= -v
 
 all: prefix/lib/libnagaqueen.a
-	${OOC} ${OOC_ARGS}
+	${OOC} ${OOC_ARGS} cork.use
 
 clean:
 	rm -rf prefix

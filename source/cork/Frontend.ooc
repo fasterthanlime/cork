@@ -1,7 +1,10 @@
 
 import Settings
+import Project
 import Parser
 import AST
+
+import libuse/UseFile
 
 import structs/HashMap
 import io/File
@@ -22,24 +25,22 @@ Frontend: class {
     /**
      * Parse a given ooc module and all its imports, recursively.
      */
-    parseRecursive: func (path: String) {
-        file := File new(path)
-        if (!file exists?()) {
-            "File not found: #{file path}, bailling out.." println()
-            exit(1)
-        }
-
-        canonicalPath := file getAbsolutePath()
+    parseRecursive: func (project: Project, path: String) {
+        canonicalPath := "#{project useFile identifier}/#{path}"
         if (cache contains?(canonicalPath)) {
             // already done
             return
         }
 
         parser := Parser new(settings)
-        parser parse(file path)
+        parser parse(project, path)
+        module := parser module
 
-        for (imp in parser module imports) {
-            parseRecursive(imp path)
+        cache put(canonicalPath, module)
+
+        for (imp in module imports) {
+            // TODO: look the imports up
+            // parseRecursive(imp path)
         }
     }
 
