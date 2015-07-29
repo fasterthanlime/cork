@@ -4,6 +4,7 @@ import libuse/[UseFile, UseFileParser]
 
 import Settings
 import Project
+import PathUtils
 
 import structs/ArrayList
 import io/File
@@ -66,17 +67,17 @@ OptionParser: class {
                     arg += ".ooc"
                 }
 
-                f := File new(arg)
-                if (!f exists?()) {
-                    err("Compilation arg not found: #{f path}")
+                oocFile := File new(arg)
+                if (!oocFile exists?()) {
+                    err("Compilation arg not found: #{oocFile path}")
                 }
 
-                name := f name[0..-5] // strip .ooc
+                name := oocFile name trimExt()
 
                 useFile = UseFile new()
                 useFile identifier = "<cork-main>"
                 useFile binaryPath = name
-                useFile sourcePath = f parent path
+                useFile sourcePath = oocFile parent path
                 useFile main = name
         }
 

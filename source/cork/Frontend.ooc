@@ -3,6 +3,7 @@ import Settings
 import Project
 import Parser
 import AST
+import PathUtils
 
 import libuse/UseFile
 
@@ -39,9 +40,32 @@ Frontend: class {
         cache put(canonicalPath, module)
 
         for (imp in module imports) {
-            // TODO: look the imports up
-            // parseRecursive(imp path)
+            (impProject, impPath) := resolveImport(module, imp path)
+            parseRecursive(impProject, impPath)
         }
+    }
+
+    resolveImport: func (module: Module, importPath: String) -> (Project, String) {
+        // TODO: cycle through 'used' projects
+        project := module project
+
+        // try as an absolute import
+        file := project find(importPath)
+
+        if (!file) {
+            // try as a relative import
+            file = project find("#{module path}/../#{importPath}")
+        }
+
+        if (!file) {
+            "Couldn't resolve import #{importPath} in #{module project sourceFolder path}/#{module path}" println()
+            exit(1)
+        }
+
+        resolvedPath := file rebase(project sourceFolder) trimExt()
+        "Resolved path = #{resolvedPath}" println()
+
+        (module project, resolvedPath)
     }
 
 }

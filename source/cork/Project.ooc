@@ -10,7 +10,7 @@ import io/File
  */
 Project: class {
 
-    sourcePath: File
+    sourceFolder: File
     useFile: UseFile
 
     init: func (=useFile) {
@@ -20,11 +20,12 @@ Project: class {
         }
 
         if (useFile file) {
-            sourcePath = File new(useFile file getParent(), useFile sourcePath)
+            sourceFolder = File new(useFile file getParent(), useFile sourcePath)
         } else {
-            sourcePath = File new(useFile sourcePath)
+            sourceFolder = File new(useFile sourcePath)
         }
-        if (!sourcePath exists?()) {
+
+        if (!sourceFolder exists?()) {
             "Source path #{useFile sourcePath} non-existent (from #{useFile identifier}.use)"
         }
     }
@@ -32,8 +33,8 @@ Project: class {
     /**
      * Find a given file in our source path.
      */
-    find: func (path: String, ext: String) -> File {
-        f := File new(sourcePath, "#{path}.#{ext}")
+    find: func (path: String, ext := "ooc") -> File {
+        f := File new(sourceFolder, "#{path}.#{ext}")
         "Attempting #{f}" println()
         if (!f exists?()) return null
         f

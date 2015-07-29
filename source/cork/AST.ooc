@@ -29,7 +29,7 @@ Module: class {
 
     init: func (=project, =path) {
         file = project find(path, "ooc")
-        projectPath = file rebase(project sourcePath) path
+        projectPath = file rebase(project sourceFolder) path
     }
 
 }

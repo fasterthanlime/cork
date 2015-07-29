@@ -20,7 +20,7 @@ Parser: class extends OocListener {
     parse: func ~cork (project: Project, path: String) {
         module = Module new(project, path)
         if (!module file) {
-            err("Could not find #{path} in #{project sourcePath}")
+            err("Could not find #{path} in #{project sourceFolder path}")
         }
 
         super(module file path)
