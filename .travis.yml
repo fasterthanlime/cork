@@ -5,7 +5,6 @@ addons:
     packages:
       - curl
       - make
-      - libgc-dev
       - zlib1g-dev
 
 before_install:
