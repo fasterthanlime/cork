@@ -9,7 +9,7 @@ addons:
       - zlib1g-dev
 
 before_install:
-  - export PATH=$PATH:$PWD/rock/bin:$PWD/sam
+  - export PATH=$PATH:$PWD/rock/bin:$PWD/sam:$PWD
   - export OOC_LIBS=$PWD
   - git clone --depth=1 git://github.com/nddrylliog/rock.git
   - (cd rock && make -s quick-rescue)

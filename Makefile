@@ -11,9 +11,9 @@ clean:
 
 prefix/lib/libnagaqueen.a: source/nagaqueen/NagaQueen.c
 	mkdir -p prefix/lib
-	gcc -c source/NagaQueen.c -o prefix/lib/libnagaqueen.a
+	gcc -c source/nagaqueen/NagaQueen.c -o prefix/lib/libnagaqueen.a
 
 source/nagaqueen/NagaQueen.c:
 	mkdir -p source/nagaqueen
-	greg ../nagaqueen/grammar/nagaqueen.leg > source/NagaQueen.c
+	greg ../nagaqueen/grammar/nagaqueen.leg > source/nagaqueen/NagaQueen.c
 
