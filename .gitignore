@@ -1,0 +1,14 @@
+# Binaries
+/cork
+/safe_cork
+
+# Libraries & Temporary C sources
+prefix
+.libs
+rock_tmp
+.sam-cache
+
+# OSX bullshit
+*.dSYM
+.DS_Store
+

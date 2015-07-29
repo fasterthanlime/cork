@@ -1,0 +1,9 @@
+Name: cork
+Version: 0.1.0
+Description: Another try at an ooc compiler
+SourcePath: source
+Main: cork/cork
+Requires: nagaqueen
+Libs: -lnagaqueen
+LibPaths: prefix/lib
+

@@ -1,0 +1,25 @@
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - curl
+      - make
+      - libgc-dev
+      - zlib1g-dev
+
+before_install:
+  - export PATH=$PATH:$PWD/rock/bin:$PWD/sam
+  - export OOC_LIBS=$PWD
+  - git clone --depth=1 git://github.com/nddrylliog/rock.git
+  - (cd rock && make -s quick-rescue)
+  - git clone --depth=1 git://github.com/nddrylliog/sam.git
+  - (cd sam && rock --quiet sam.use)
+
+script:
+  - make clean all
+  - cork source/cork/Compiler.ooc
+
+notifications:
+  webhooks: http://rcmp.pw/freenode/ooc-lang
+
