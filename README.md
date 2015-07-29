@@ -7,7 +7,7 @@
 
 Another attempt at an ooc compiler.
 
-cf. [`docs/design.md`](blob/master/docs/design.md)
+cf. [`docs/design.md`](docs/design.md)
 
 ### Authors
 
