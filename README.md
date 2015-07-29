@@ -1,8 +1,10 @@
+[![Build Status](https://travis-ci.org/fasterthanlime/cork.svg)](https://travis-ci.org/fasterthanlime/cork)
+
 ## cork
 
 Another attempt at an ooc compiler.
 
-cf. docs/design.md
+cf. `docs/design.md`
 
 ### Authors
 
