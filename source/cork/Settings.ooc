@@ -16,10 +16,15 @@ Settings: class {
     oocLibDirs := ArrayList<String> new()
     cArgs := ArrayList<String> new()
 
+    defaultUses := ArrayList<String> new()
+
     verbosity := Verbosity NORMAL
 
     init: func {
         readOocLibs()
+
+        // use the SDK by default
+        defaultUses add("sdk")
     }
 
     readOocLibs: func {

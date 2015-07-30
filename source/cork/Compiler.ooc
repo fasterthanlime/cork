@@ -34,6 +34,7 @@ Compiler: class {
             return
         }
 
+        frontend projectCache put(project useFile identifier, project)
         frontend parseRecursive(project, project useFile main)
     }
 

@@ -6,14 +6,14 @@ import text/StringTokenizer
 
 // ours
 import UseFile
+import PathUtils
 
 /**
  * Caching interface to `UseFileReader`
  */
 UseFileParser: class {
 
-    cache := HashMap<String, UseFile> new()
-    libDirs := ArrayList<File> new()
+    libDirs := ArrayList<String> new()
 
     init: func
     
@@ -25,9 +25,8 @@ UseFileParser: class {
     findUse: func (identifier: String) -> File {
         fileName := "#{identifier}.use"
 
-        for(dir in libDirs) {
-            if(dir path == null) continue
-            res := dir findShallow(fileName, 2)
+        for (dir in libDirs) {
+            res := File new(dir) findShallow(fileName, 3)
             if (res) return res
         }
 
@@ -55,8 +54,9 @@ UseFileReader: class {
 
         useFile = UseFile new()
         useFile file = file
+        useFile identifier = file name trimExt()
         
-        "Reading use file #{file}" println()
+        "[parse] [#{useFile identifier}] .use file" println()
         readTop()
     }
 
@@ -88,6 +88,15 @@ UseFileReader: class {
 
                 useVersion := readVersionExpr(versionExpr)
                 versionStack push(UseProperties new(useFile, useVersion))
+                continue
+            }
+
+            if (line startsWith?("}")) {
+                child := versionStack pop()
+                parent := versionStack peek()
+
+                child useVersion = UseVersionAnd new(useFile, parent useVersion, child useVersion)
+                useFile properties add(child)
                 continue
             }
 
@@ -213,7 +222,7 @@ UseFileReader: class {
             } else if (id == "Main") {
                 main := value
                 if (main toLower() endsWith?(".ooc")) {
-                    main = main [0..-5] // trim the '.ooc' part
+                    main = main trimExt()
                 }
                 useFile main = main
             } else if (id == "LuaBindings") {

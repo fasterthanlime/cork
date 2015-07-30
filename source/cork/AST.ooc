@@ -20,6 +20,7 @@ Module: class {
 
 
     imports := ArrayList<Import> new()
+    uses := ArrayList<Use> new()
 
     project: Project
     path: String
@@ -29,8 +30,22 @@ Module: class {
 
     init: func (=project, =path) {
         file = project find(path, "ooc")
+        if (!file) {
+            raise("Invalid module instantiation! Couldn't find #{path} in #{project id}")
+        }
         projectPath = file rebase(project sourceFolder) path
     }
+
+}
+
+/**
+ * A use directive
+ */
+Use: class {
+
+    identifier: String
+
+    init: func (=identifier)
 
 }
 

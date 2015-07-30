@@ -13,20 +13,19 @@ Project: class {
     sourceFolder: File
     useFile: UseFile
 
+    id: String { get { useFile identifier } }
+
     init: func (=useFile) {
-        if (!useFile sourcePath) {
-            "Use file #{useFile identifier} has no sourcePath." println()
-            exit(1)
-        }
+        if (useFile sourcePath) {
+            if (useFile file) {
+                sourceFolder = File new(useFile file getParent(), useFile sourcePath)
+            } else {
+                sourceFolder = File new(useFile sourcePath)
+            }
 
-        if (useFile file) {
-            sourceFolder = File new(useFile file getParent(), useFile sourcePath)
-        } else {
-            sourceFolder = File new(useFile sourcePath)
-        }
-
-        if (!sourceFolder exists?()) {
-            "Source path #{useFile sourcePath} non-existent (from #{useFile identifier}.use)"
+            if (!sourceFolder exists?()) {
+                "Source path #{useFile sourcePath} non-existent (from #{useFile identifier}.use)"
+            }
         }
     }
 
@@ -34,8 +33,9 @@ Project: class {
      * Find a given file in our source path.
      */
     find: func (path: String, ext := "ooc") -> File {
+        if (!sourceFolder) return null
+
         f := File new(sourceFolder, "#{path}.#{ext}")
-        "Attempting #{f}" println()
         if (!f exists?()) return null
         f
     }

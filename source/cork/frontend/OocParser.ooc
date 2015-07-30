@@ -2,15 +2,13 @@
 use nagaqueen
 import nagaqueen/OocListener
 
-import Settings
-import Project
-import AST
+import cork/[Settings, Project, AST]
 
 /**
  * Builds the AST of an ooc module using nagaqueen.
  * cf. https://github.com/fasterthanlime/nagaqueen
  */
-Parser: class extends OocListener {
+OocParser: class extends OocListener {
 
     settings: Settings
     module: Module
@@ -37,8 +35,12 @@ Parser: class extends OocListener {
     strict?: func -> Bool { false }
 
     onVarAccess: func (expr: Object, name: CString) -> Object {
-        "Got variable access to #{name}" println()
         null
+    }
+
+    onUse: func (name: CString) {
+        uze := Use new(name toString())
+        module uses add(uze)
     }
 
     onImport: func (path, name: CString) {

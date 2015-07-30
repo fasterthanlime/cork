@@ -1,10 +1,9 @@
 
 use libuse
-import libuse/[UseFile, UseFileParser]
+import libuse/[UseFile, UseFileParser, PathUtils]
 
 import Settings
 import Project
-import PathUtils
 
 import structs/ArrayList
 import io/File
