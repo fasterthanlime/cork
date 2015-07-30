@@ -39,8 +39,8 @@ OocParser: class extends OocListener {
     }
 
     onUse: func (name: CString) {
-        uze := Use new(name toString())
-        module uses add(uze)
+        use := Use new(name toString())
+        module uses add(use)
     }
 
     onImport: func (path, name: CString) {
