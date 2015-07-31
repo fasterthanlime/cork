@@ -6,6 +6,7 @@ import libuse/[UseFile, UseFileParser, PathUtils]
 import Settings
 import Project
 import CompileError
+import CorkUseErrorHandler
 
 // sdk
 import structs/ArrayList
@@ -22,6 +23,7 @@ OptionParser: class {
 
     init: func (=settings) {
         useFileParser = UseFileParser new()
+        useFileParser errorHandler = CorkUseErrorHandler new(settings)
         useFileParser libDirs addAll(settings oocLibDirs)
     }
     

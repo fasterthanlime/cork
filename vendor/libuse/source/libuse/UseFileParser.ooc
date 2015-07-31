@@ -1,4 +1,8 @@
 
+// third-party
+use libtoken
+import libtoken/[Token]
+
 // sdk
 import io/[File, FileReader, StringReader]
 import structs/[ArrayList, HashMap, Stack]
@@ -9,16 +13,31 @@ import UseFile
 import PathUtils
 
 /**
+ * Error handler for use files
+ */
+UseErrorHandler: class {
+
+    init: func
+
+    throw: func (t: Token, msg: String) {
+        raise(msg)
+    }
+
+}
+
+/**
  * Caching interface to `UseFileReader`
  */
 UseFileParser: class {
 
     libDirs := ArrayList<String> new()
 
+    errorHandler := UseErrorHandler new()
+
     init: func
     
     parse: func (file: File) -> UseFile {
-        reader := UseFileReader new(file)
+        reader := UseFileReader new(errorHandler, file)
         reader useFile
     }
 
@@ -44,12 +63,13 @@ UseFileReader: class {
     file: File
     useFile: UseFile
 
+    errorHandler: UseErrorHandler
+
     versionStack := Stack<UseProperties> new()
 
-    init: func (=file) {
+    init: func (=errorHandler, =file) {
         if (!file exists?()) {
-            ".use file not found: #{file path}" println()
-            exit(1)
+            errorHandler throw(nullToken, ".use file not found: #{file path}")
         }
 
         useFile = UseFile new()
@@ -70,6 +90,8 @@ UseFileReader: class {
         versionStack push(UseProperties new(useFile, UseVersion new(useFile)))
 
         while (reader hasNext?()) {
+            start := reader mark()
+
             line := reader readLine() \
                            trim() /* general whitespace */ \
                            trim(8 as Char /* backspace */) \
@@ -84,9 +106,10 @@ UseFileReader: class {
             if (line startsWith?("version")) {
                 lineReader readUntil('(')
                 lineReader rewind(1)
+                start += lineReader mark() - 1
                 versionExpr := lineReader readAll()[0..-2] trim()
 
-                useVersion := readVersionExpr(versionExpr)
+                useVersion := readVersionExpr(start, versionExpr)
                 versionStack push(UseProperties new(useFile, useVersion))
                 continue
             }
@@ -265,7 +288,7 @@ UseFileReader: class {
      *   windows && !(linux || (apple && ios))
      *
      */
-    readVersionExpr: func (expr: String) -> UseVersion {
+    readVersionExpr: func (offset: Long, expr: String) -> UseVersion {
         reader := StringReader new(expr)
         not := false
 
@@ -299,7 +322,7 @@ UseFileReader: class {
             }
 
             inner := buff toString()
-            result = readVersionExpr(inner)
+            result = readVersionExpr(offset + reader mark(), inner)
         } else {
             // read an identifier
             value := reader readWhile(|c| c alphaNumeric?())
@@ -321,17 +344,17 @@ UseFileReader: class {
                     reader read()
                     reader skipWhile(|c| c whitespace?())
 
-                    inner := readVersionExpr(reader readAll())
+                    inner := readVersionExpr(offset + reader mark(), reader readAll())
                     result = UseVersionAnd new(useFile, result, inner)
                 case '|' =>
                     // skip the second one
                     reader read()
                     reader skipWhile(|c| c whitespace?())
 
-                    inner := readVersionExpr(reader readAll())
+                    inner := readVersionExpr(offset + reader mark(), reader readAll())
                     result = UseVersionOr new(useFile, result, inner)
                 case =>
-                    err("Malformed version expression: #{expr}. Unexpected char '#{c}'")
+                    errorHandler throw(token(offset + reader mark() - 1, 1), "Malformed version expression: #{expr}. Unexpected char `#{c}`")
             }
         }
 
@@ -370,9 +393,8 @@ UseFileReader: class {
         }
     }
 
-    err: func (msg: String) {
-        msg println()
-        exit(1)
+    token: func (start, length: Int) -> Token {
+        (start, length, file path, 0) as Token
     }
 
 }

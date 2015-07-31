@@ -24,13 +24,12 @@ VERSION := Version new(0, 1, 0)
 main: func (args: ArrayList<String>) -> Int {
     "cork v#{VERSION}" println()
 
-    settings := Settings new()
-    optParser := OptionParser new(settings)
-    optParser parse(args)
-
-    compiler := Compiler new(settings)
-
     try {
+        settings := Settings new()
+        optParser := OptionParser new(settings)
+        optParser parse(args)
+
+        compiler := Compiler new(settings)
         compiler run()
     } catch (e: CompilationFailed) {
         return 1

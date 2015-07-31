@@ -9,6 +9,7 @@ import Project
 import AST
 import frontend/OocParser
 import CompileError
+import CorkUseErrorHandler
 
 // sdk
 import structs/HashMap
@@ -28,6 +29,7 @@ Frontend: class {
 
     init: func (=settings) {
         useFileParser = UseFileParser new()
+        useFileParser errorHandler = CorkUseErrorHandler new(settings)
         useFileParser libDirs addAll(settings oocLibDirs)
     }
 

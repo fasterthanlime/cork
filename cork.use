@@ -6,4 +6,3 @@ Main: cork/cork
 Requires: nagaqueen, libuse, libovum, libtoken
 Libs: -lnagaqueen
 LibPaths: prefix/lib
-
