@@ -1,13 +1,22 @@
 
+// third-party
+// rock requires a `use` directive in an .ooc file even when they're in the
+// `Requires` clause. It's a bit wonky but this'll allow cork to be compiled by
+// rock AND self-hosting later.
+use nagaqueen
+use libuse
+use libtoken
+use libovum
+
+// ours
 use cork
 import Settings, OptionParser, Compiler, CompileError
-
-use libuse
-
 import Version
-VERSION := Version new(0, 1, 0)
 
+// sdk
 import structs/ArrayList
+
+VERSION := Version new(0, 1, 0)
 
 /**
  * Main entry point into cork

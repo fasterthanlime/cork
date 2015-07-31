@@ -1,7 +1,11 @@
 
-import Project
-import Token
+// third-party
+import libtoken/Token
 
+// ours
+import Project
+
+// sdk
 import structs/[HashMap, MultiMap, ArrayList]
 import io/File
 

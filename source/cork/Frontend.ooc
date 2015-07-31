@@ -1,12 +1,12 @@
 
 // third-party
 import libuse/[UseFile, UseFileParser, PathUtils]
+import libtoken/Token
 
 // ours
 import Settings
 import Project
 import AST
-import Token
 import frontend/OocParser
 import CompileError
 

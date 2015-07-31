@@ -1,0 +1,4 @@
+Name: libtoken
+Version: 0.1.0
+Description: A library to pretty-print error messages based on files & positions
+SourcePath: vendor/libtoken/source

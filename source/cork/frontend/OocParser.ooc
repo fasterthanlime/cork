@@ -1,8 +1,10 @@
 
-use nagaqueen
+// third-party
 import nagaqueen/OocListener
+import libtoken/Token
 
-import cork/[Settings, Project, Token, AST, CompileError]
+// ours
+import cork/[Settings, Project, AST, CompileError]
 
 /**
  * Builds the AST of an ooc module using nagaqueen.

@@ -1,8 +1,6 @@
 
 // ours
-import Settings
-import AST
-import CompileError
+import ErrorOutput
 
 // sdk
 import io/[File, StringReader]

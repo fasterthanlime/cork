@@ -1,4 +1,7 @@
 
+// third-party
+import libtoken/ErrorOutput
+
 // ours
 import Project, CompileError
 
