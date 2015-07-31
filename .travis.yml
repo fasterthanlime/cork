@@ -17,8 +17,8 @@ before_install:
   - git clone --depth=1 git://github.com/fasterthanlime/nagaqueen.git
 
 script:
-  - OOC_ARGS="-vv" make clean all
-  - cork source/cork/Compiler.ooc
+  - make clean all
+  - cork cork.use
 
 notifications:
   webhooks: http://rcmp.pw/freenode/ooc-lang
