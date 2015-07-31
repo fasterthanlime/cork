@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 
 addons:
   apt:
@@ -8,6 +8,8 @@ addons:
       - zlib1g-dev
 
 before_install:
+  - sudo apt-get update -yy
+  - sudo apt-get install curl make zlib1g-dev -yy
   - export PATH=$PATH:$PWD/rock/bin:$PWD/sam:$PWD
   - export OOC_LIBS=$PWD
   - git clone --depth=1 git://github.com/fasterthanlime/rock.git
