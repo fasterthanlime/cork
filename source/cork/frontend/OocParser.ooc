@@ -1,10 +1,13 @@
 
 // third-party
-import nagaqueen/OocListener
+import nagaqueen/[callbacks, OocListener]
 import libtoken/Token
 
 // ours
 import cork/[Settings, Project, AST, CompileError]
+
+// sdk
+import io/File
 
 /**
  * Builds the AST of an ooc module using nagaqueen.
@@ -23,7 +26,8 @@ OocParser: class extends OocListener {
             err("Could not find #{path} in #{project sourceFolder path}")
         }
 
-        super(module file path)
+        contents := File new(module file path) read()
+        nq_memparse(this, contents, contents size)
     }
 
     err: func (msg: String) {
