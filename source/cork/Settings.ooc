@@ -72,7 +72,7 @@ Settings: class {
 
 /**
  * Thrown when a compilation error is thrown inside
- * of cork, inside of exit(-1) (in case cork is ever
+ * of cork, inside of calling exit (in case cork is ever
  * used as a library..)
  */
 CompilationFailed: class extends Exception {

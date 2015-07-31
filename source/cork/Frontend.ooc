@@ -77,8 +77,8 @@ Frontend: class {
         file := useFileParser findUse(identifier)
 
         if (!file) {
-            "#{identifier}.use not found in any element of $OOC_LIBS" println()
-            exit(1)
+            msg := "#{identifier}.use not found in any element of $OOC_LIBS"
+            settings throw(CompileError new(msg))
         }
 
         useFile := useFileParser parse(file)
