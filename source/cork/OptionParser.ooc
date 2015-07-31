@@ -1,9 +1,13 @@
 
+// third-party
 import libuse/[UseFile, UseFileParser, PathUtils]
 
+// ours
 import Settings
 import Project
+import CompileError
 
+// sdk
 import structs/ArrayList
 import io/File
 
@@ -87,8 +91,7 @@ OptionParser: class {
     }
 
     err: func (msg: String) {
-        msg println()
-        exit(1)
+        settings throw(CompileError new(msg))
     }
 
 }
