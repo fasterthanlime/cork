@@ -2,7 +2,7 @@
 use nagaqueen
 import nagaqueen/OocListener
 
-import cork/[Settings, Project, Token, AST]
+import cork/[Settings, Project, Token, AST, CompileError]
 
 /**
  * Builds the AST of an ooc module using nagaqueen.
@@ -25,8 +25,7 @@ OocParser: class extends OocListener {
     }
 
     err: func (msg: String) {
-        msg print()
-        exit(1)
+        settings throw(CompileError new(msg))
     }
 
     /**
