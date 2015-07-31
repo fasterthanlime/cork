@@ -2,6 +2,8 @@
 use cork
 import Settings, OptionParser, Compiler
 
+use libuse
+
 import Version
 VERSION := Version new(0, 1, 0)
 

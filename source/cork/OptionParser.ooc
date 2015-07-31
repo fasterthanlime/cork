@@ -1,5 +1,4 @@
 
-use libuse
 import libuse/[UseFile, UseFileParser, PathUtils]
 
 import Settings

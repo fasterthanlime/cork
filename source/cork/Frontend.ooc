@@ -1,5 +1,4 @@
 
-use libuse
 import libuse/[UseFile, UseFileParser, PathUtils]
 
 import Settings
@@ -104,6 +103,13 @@ Frontend: class {
         // try as an absolute import in used projects
         if (!file) for (use in module uses) {
             project = findProject(use identifier)
+            file = project find(importPath)
+            if (file) break
+        }
+
+        // try as an absolute import in requirements
+        if (!file) for (req in module project useFile requirements) {
+            project = findProject(req name)
             file = project find(importPath)
             if (file) break
         }

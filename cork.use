@@ -3,7 +3,7 @@ Version: 0.1.0
 Description: Another try at an ooc compiler
 SourcePath: source
 Main: cork/cork
-Requires: nagaqueen
+Requires: nagaqueen, libuse, libovum
 Libs: -lnagaqueen
 LibPaths: prefix/lib
 
