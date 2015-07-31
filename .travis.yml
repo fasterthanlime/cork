@@ -1,4 +1,4 @@
-sudo: true
+sudo: false
 
 addons:
   apt:
@@ -8,18 +8,18 @@ addons:
       - zlib1g-dev
 
 before_install:
-  - sudo apt-get update -yy
-  - sudo apt-get install curl make zlib1g-dev -yy
+  # - sudo apt-get update -yy
+  # - sudo apt-get install curl make zlib1g-dev -yy
   - export PATH=$PATH:$PWD/rock/bin:$PWD/sam:$PWD
   - export OOC_LIBS=$PWD
-  - git clone --depth=1 git://github.com/fasterthanlime/rock.git
-  - (cd rock && make -s rescue)
+  - git clone --depth=1 -b travis-debug git://github.com/fasterthanlime/rock.git
+  - (cd rock && make rescue)
   - git clone --depth=1 git://github.com/fasterthanlime/sam.git
   - (cd sam && rock --quiet sam.use)
   - git clone --depth=1 git://github.com/fasterthanlime/nagaqueen.git
 
 script:
-  - make clean all
+  - OOC_ARGS="-vv" make clean all
   - cork source/cork/Compiler.ooc
 
 notifications:
