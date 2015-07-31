@@ -1,5 +1,4 @@
-> Note: Travis is being a shithead, somehow rock crashes there, but
-> it works elsewhere, I swear...
+> Note: My bad, Travis! It wasn't your fault.
 
 [![Build Status](https://travis-ci.org/fasterthanlime/cork.svg)](https://travis-ci.org/fasterthanlime/cork)
 
