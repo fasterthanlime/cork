@@ -1,5 +1,6 @@
 
 import Project
+import Token
 
 import structs/[HashMap, MultiMap, ArrayList]
 import io/File
@@ -7,17 +8,18 @@ import io/File
 /**
  * Base class for all AST nodes
  */
-Node: class {
+OocNode: class {
 
-    init: func
+    token: Token
+
+    init: func (=token)
 
 }
 
 /**
  * A compilation unit (an .ooc file)
  */
-Module: class {
-
+Module: class extends OocNode {
 
     imports := ArrayList<Import> new()
     uses := ArrayList<Use> new()
@@ -33,6 +35,8 @@ Module: class {
         if (!file) {
             raise("Invalid module instantiation! Couldn't find #{path} in #{project id}")
         }
+
+        super((0, 0, file getPath(), 0) as Token)
         projectPath = file rebase(project sourceFolder) path
     }
 
@@ -41,22 +45,22 @@ Module: class {
 /**
  * A use directive
  */
-Use: class {
+Use: class extends OocNode {
 
     identifier: String
 
-    init: func (=identifier)
+    init: func (=token, =identifier)
 
 }
 
 /**
  * An import directive
  */
-Import: class {
+Import: class extends OocNode {
 
     path: String
 
-    init: func (=path)
+    init: func (=token, =path)
 
 }
 

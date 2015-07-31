@@ -5,7 +5,9 @@ import AST
 import CompileError
 
 // sdk
-import io/StringReader
+import io/[File, StringReader]
+import structs/HashMap
+import os/Terminal
 
 /* Token can't be null, but it can be filled with zero-values */
 nullToken := (0, 0, null, 0) as Token
@@ -125,7 +127,7 @@ Token: cover {
 
         out append("\n")
 
-        fr := StringReader new(readFile(source))
+        fr := StringReader new(readFile(path))
 
         lastNewLine := 0
         lines := 1

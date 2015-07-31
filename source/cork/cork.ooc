@@ -1,6 +1,6 @@
 
 use cork
-import Settings, OptionParser, Compiler
+import Settings, OptionParser, Compiler, CompileError
 
 use libuse
 
@@ -20,7 +20,12 @@ main: func (args: ArrayList<String>) -> Int {
     optParser parse(args)
 
     compiler := Compiler new(settings)
-    compiler run()
+
+    try {
+        compiler run()
+    } catch (e: CompilationFailed) {
+        return 1
+    }
 
     0
 }

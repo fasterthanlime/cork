@@ -2,7 +2,7 @@
 use nagaqueen
 import nagaqueen/OocListener
 
-import cork/[Settings, Project, AST]
+import cork/[Settings, Project, Token, AST]
 
 /**
  * Builds the AST of an ooc module using nagaqueen.
@@ -39,7 +39,7 @@ OocParser: class extends OocListener {
     }
 
     onUse: func (name: CString) {
-        use := Use new(name toString())
+        use := Use new(token(), name toString())
         module uses add(use)
     }
 
@@ -51,8 +51,15 @@ OocParser: class extends OocListener {
                 "#{path}/#{name}"
         }
 
-        imp := Import new(fullPath)
+        imp := Import new(token(), fullPath)
         module imports add(imp)
+    }
+
+    /**
+     * Build a token from the start/end/lineno information passed by nagaqueen
+     */
+    token: func -> Token {
+        (tokenPosPointer[0], tokenPosPointer[1], module token path, lineNoPointer@) as Token
     }
     
 }

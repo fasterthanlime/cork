@@ -1,11 +1,16 @@
 
+// third-party
 import libuse/[UseFile, UseFileParser, PathUtils]
 
+// ours
 import Settings
 import Project
 import AST
+import Token
 import frontend/OocParser
+import CompileError
 
+// sdk
 import structs/HashMap
 import io/File
 
@@ -45,18 +50,20 @@ Frontend: class {
         cache put(canonicalPath, module)
 
         for (defaultUse in settings defaultUses) {
-            module uses add(Use new(defaultUse))
+            // TODO: don't use a nullToken
+            module uses add(Use new(nullToken, defaultUse))
         }
 
         for (use in module uses) {
             dependency := findProject(use identifier)
             for (path in dependency useFile imports) {
-                module imports add(Import new(path))
+                // TODO: don't use a nullToken
+                module imports add(Import new(nullToken, path))
             }
         }
 
         for (import in module imports) {
-            (impProject, impPath) := findModule(module, import path)
+            (impProject, impPath) := findModule(import token, module, import path)
             parseRecursive(impProject, impPath)
         }
     }
@@ -86,7 +93,7 @@ Frontend: class {
      * the project and canonical path of the module referenced by the
      * import.
      */
-    findModule: func (module: Module, importPath: String) -> (Project, String) {
+    findModule: func (importToken: Token, module: Module, importPath: String) -> (Project, String) {
 
         project := module project
 
@@ -115,8 +122,8 @@ Frontend: class {
         }
 
         if (!file) {
-            "Couldn't resolve import #{importPath} in #{module project sourceFolder path}/#{module path}" println()
-            exit(1)
+            msg := "Couldn't resolve import #{importPath} in #{module project sourceFolder path}/#{module path}"
+            settings throw(CompileError new(importToken, msg))
         }
 
         resolvedPath := file rebase(project sourceFolder) trimExt()
