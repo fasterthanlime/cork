@@ -24,8 +24,8 @@ Token: cover {
 
     end: Int { get { start + length } }
 
-    /** Module this token comes from */
-    module: Module
+    /** Path of the file this token comes from */
+    path: String
 
     /** 0-based line number of this token */
     lineno: Int
@@ -48,16 +48,16 @@ Token: cover {
         ex : This
         ex start = start
         ex length = (next start + next length) - start
-        ex module = module
+        ex path = path
         ex
     }
 
     /**
-     * Gives a string representation of the boundaries of this module
+     * Gives a string representation of the boundaries of this token
      */
     toString: func -> String {
-        module != null ? (
-            "%s [%d, %d]" format(module fullName, start, end)
+        path != null ? (
+            "%s [%d, %d]" format(path, start, end)
         ) : (
             "[%d, %d]" format(start, end)
         )
@@ -118,14 +118,14 @@ Token: cover {
      * using enclosing)
      */
     writeMessage: func (prefix, message, type: String, out: ErrorOutput) {
-        if(module == null) {
+        if(path == null) {
             out append("From unknown source [%s] %s" format(type, message))
             return
         }
 
         out append("\n")
 
-        fr := StringReader new(module getSource())
+        fr := StringReader new(readFile(source))
 
         lastNewLine := 0
         lines := 1
@@ -175,7 +175,7 @@ Token: cover {
         over := Buffer new()
 
         if(type != "") {
-            out append(prefix). append("%s:%d:%d " format(module getLocalPath(".ooc"), lines, start - lastNewLine))
+            out append(prefix). append("%s:%d:%d " format(path, lines, start - lastNewLine))
 
             match type {
                 case "error" =>
@@ -253,7 +253,7 @@ Token: cover {
      * Path to the ooc file this token has been parsed from
      */
     getPath: func -> String {
-        module oocPath
+        path
     }
 
     /**
@@ -288,6 +288,26 @@ Token: cover {
     equals?: func (other: This) -> Bool {
         return memcmp(this&, other&, This size) == 0
     }
+
+    /*
+     * File reading facilities
+     */
+
+    fileCache := static HashMap<String, String> new()
+
+    readFile: static func (path: String) -> String {
+        path = File new(path) getAbsolutePath()
+
+        cached := fileCache get(path)
+
+        if (!cached) {
+            cached = File new(path) read()
+            fileCache put(path, cached)
+        }
+
+        cached
+    }
+
 
 }
 
