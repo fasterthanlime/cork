@@ -17,6 +17,10 @@ OocNode: class {
     token: Token
 
     init: func (=token)
+    
+    toString: func -> String {
+        "[#{class name}]"
+    }
 
 }
 
@@ -40,7 +44,7 @@ Module: class extends OocNode {
             raise("Invalid module instantiation! Couldn't find #{path} in #{project id}")
         }
 
-        super((0, 0, file getPath(), 0) as Token)
+        super((file getPath(), 0, 0) as Token)
         projectPath = file rebase(project sourceFolder) path
     }
 
@@ -68,4 +72,18 @@ Import: class extends OocNode {
 
 }
 
+/**
+ * A function declaration
+ */
+Function: class extends OocNode {
+
+    name: String
+
+    init: func (=token, =name)
+
+    toString: func -> String {
+        "[function #{name}()]"
+    }
+
+}
 
