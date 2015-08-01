@@ -394,7 +394,7 @@ UseFileReader: class {
     }
 
     token: func (start, length: Int) -> Token {
-        (start, length, file path, 0) as Token
+        (file path, start, length, file path) as Token
     }
 
 }

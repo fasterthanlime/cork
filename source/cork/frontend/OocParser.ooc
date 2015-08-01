@@ -64,7 +64,7 @@ OocParser: class extends OocListener {
      * Build a token from the start/end/lineno information passed by nagaqueen
      */
     token: func -> Token {
-        (tokenPosPointer[0], tokenPosPointer[1], module token path, lineNoPointer@) as Token
+        (module token path, tokenPosPointer[0], tokenPosPointer[1], module token path) as Token
     }
     
 }

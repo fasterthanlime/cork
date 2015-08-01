@@ -8,7 +8,7 @@ import structs/HashMap
 import os/Terminal
 
 /* Token can't be null, but it can be filled with zero-values */
-nullToken := (0, 0, null, 0) as Token
+nullToken := (null, 0, 0) as Token
 
 /**
  * A token stores the position in source of a particular piece of code,
@@ -19,16 +19,13 @@ nullToken := (0, 0, null, 0) as Token
  */
 Token: cover {
 
+    /** Path of the file this token comes from */
+    path: String
+
     /** Start and length of this token, in bytes */
     start, length: Int
 
     end: Int { get { start + length } }
-
-    /** Path of the file this token comes from */
-    path: String
-
-    /** 0-based line number of this token */
-    lineno: Int
 
     /* No constructor, should be built with cover-literal syntax */
 
@@ -254,13 +251,6 @@ Token: cover {
      */
     getPath: func -> String {
         path
-    }
-
-    /**
-     * @return the 1-based line number of this token
-     */
-    getLineNumber: func -> Int {
-        lineno + 1
     }
 
     /**
